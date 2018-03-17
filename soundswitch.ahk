@@ -6,11 +6,19 @@ global G_ShowInfoTrayTips := false
 #F1::SoundActivate("Speakers","Realtek High Definition Audio")
 #F2::SoundActivate("Headphones","SteelSeries Arctis 7 Game")
 
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+#F12::
+G_ShowInfoTrayTips := !G_ShowInfoTrayTips
+Return
+
 SoundActivate(DesiredName1, DesiredName2)
 {
 	Run, mmsys.cpl
 	WinWait, Sound ahk_exe rundll32.exe
-	ControlGet, MyList, List,,SysListView321, Sound ahk_exe rundll32.exe
+	WinGet,SoundWindow,ID,Sound ahk_exe rundll32.exe
+	SoundWindowID := "ahk_id" . SoundWindow
+	ControlGet, MyList, List,,SysListView321, %SoundWindowID%
 	Found := false
 	Loop, Parse, MyList, `n  ; Rows are delimited by linefeeds (`n).
 	{
@@ -38,18 +46,18 @@ SoundActivate(DesiredName1, DesiredName2)
 			Found := true
 			If (Status = "Ready")
 			{
-				ControlSend, SysListView321,{Home}, Sound ahk_exe rundll32.exe
+				ControlSend, SysListView321,{Home}, %SoundWindowID%
 				Loop,% RowNumber - 1
 				{
-					ControlSend, SysListView321,{Down}, Sound ahk_exe rundll32.exe
+					ControlSend, SysListView321,{Down}, %SoundWindowID%
 				}
-				ControlSend,Button2,{Down}d,Sound ahk_exe rundll32.exe
+				ControlSend,Button2,{Down}d,%SoundWindowID%
 				If (G_ShowInfoTrayTips)
 				{
 					TrayTip,SoundSwitch,Default is now %Name1%/%Name2%
 				}
-				;ControlSend,,{Tab}{Down}d,Sound ahk_exe rundll32.exe
-				;ControlFocus,Button 2,Sound ahk_exe rundll32.exe
+				;ControlSend,,{Tab}{Down}d,%SoundWindowID%
+				;ControlFocus,Button 2,%SoundWindowID%
 				;Send {Tab}
 				;Send {Tab}
 				;Sleep 1000
@@ -59,7 +67,10 @@ SoundActivate(DesiredName1, DesiredName2)
 			}
 			Else if (Status = "Default Device")
 			{
-				TrayTip,SoundSwitch,%Name1%/%Name2% is already default device.,0,2
+				If (G_ShowInfoTrayTips)
+				{
+					TrayTip,SoundSwitch,%Name1%/%Name2% is already default device.,0,2
+				}
 			}
 			Else
 			{
