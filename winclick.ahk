@@ -1,6 +1,4 @@
-﻿#Warn
-;SendMode Input
-;SetWorkingDir %A_ScriptDir%
+#Warn
 #SingleInstance Force
 
 #RButton::
