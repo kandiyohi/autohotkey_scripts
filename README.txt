@@ -52,9 +52,13 @@ Autohotkey scripts for others to use.
 
     == winclick.ahk ==
 
-    Easily shunt windows behind all other windows.  The default keybind is:
+    Easily shunt or minimize windows behind all other windows.  The default
+    keybind is:
 
         - WinKey+RightClick  -  Move window under mouse cursor to back.
+        - WinKey+LeftClick  -  Minimized window under mouse cursor.
+        - WinKey+z  -  Undo last operation.  This will activate the window,
+                       even if it was previously inactive.
 
     It is recommended to run this script with either UI Access or as
     Administrator so all windows can be managed.
