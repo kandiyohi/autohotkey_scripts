@@ -5,15 +5,14 @@ TrayTip, MyTitle, Testing, 0, 1
 return
 
 ^+!g::
-;WinGet, OutputVar , Cmd, WinTitle, WinText, ExcludeTitle, ExcludeText
 Try
 {
 	DetectHiddenWindows, Off
 	WinGet, ActiveWindow, ProcessName, A
 	WinGet, Windows, List, ahk_exe %ActiveWindow%
 
-	; x <->
-	; y ^/v
+	; The number here never seems to line up with how many windows are actually
+	; moved.
 	TrayTip, MyTitle, Moving %Windows% windows., 0, 1
 	Loop,%Windows%
 	{
@@ -27,6 +26,8 @@ Try
 			Continue
 		}
 		WinGetPos, WindowX, WindowY, WindowWidth, WindowHeight, %WindowId%
+		; Calculate where to put the top left corner for easy closing of
+		; multiple windows.
 		X := A_ScreenWidth - WindowWidth
 		Y := 0
 		WinMove, %WindowId%,, %X%, %Y%
