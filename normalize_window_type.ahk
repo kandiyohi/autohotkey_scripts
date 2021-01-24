@@ -21,6 +21,11 @@ Try
 		WindowId := "ahk_id " . Windows%A_Index%
 		WinActivate, %WindowId%
 		WinGetTitle, WindowTitle, %WindowId%
+		WinGetClass, WindowClass, %WindowId%
+		; Skip taskbar on other monitors.
+		If (WindowClass == "Shell_SecondaryTrayWnd") {
+			Continue
+		}
 		WinGetPos, WindowX, WindowY, WindowWidth, WindowHeight, %WindowId%
 		X := A_ScreenWidth - WindowWidth
 		Y := 0
